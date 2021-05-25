@@ -23,6 +23,17 @@ class SinglyLinkedList {
             this->tail = nullptr;
         }
 
+        void insert_node(int node_data) {
+            SinglyLinkedListNode* node = new SinglyLinkedListNode(node_data);
+
+            if (!this->head) {
+                this->head = node;
+            } else {
+                this->tail->next = node;
+            }
+
+            this->tail = node;
+        }
 };
 
 void print_singly_linked_list(SinglyLinkedListNode* node, string sep, ofstream& fout) {
@@ -46,7 +57,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
     }
 }
 
-// Complete the insertNodeAtHead function below.
+// Complete the insertNodeAtPosition function below.
 
 /*
  * For your reference:
@@ -57,21 +68,17 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
  * };
  *
  */
-SinglyLinkedListNode* insertNodeAtHead(SinglyLinkedListNode* llist, int data) {
-    if(!llist){
-        llist = new SinglyLinkedListNode(data);
+SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data, int position) {
+    unsigned short int i=1;
+    SinglyLinkedListNode *ptr = head;
+    while(i<position){
+        ptr = ptr->next;
+        i++;
     }
-    else {
-        SinglyLinkedListNode *ptr = new SinglyLinkedListNode(data);
-        ptr->next = llist;
-        llist = ptr;
-        // while(ptr->next) {
-        //     ptr = ptr->next;
-        // } 
-        // ptr->next = new SinglyLinkedListNode(data);
-        // cout << ptr->data << '\n';
-    }
-    return llist;
+    SinglyLinkedListNode *temp = ptr->next;
+    ptr->next = new SinglyLinkedListNode(data);
+    ptr->next->next = temp;
+    return head;
 }
 
 int main()
@@ -88,15 +95,24 @@ int main()
         int llist_item;
         cin >> llist_item;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    
-      	SinglyLinkedListNode* llist_head = insertNodeAtHead(llist->head, llist_item);
-        llist->head = llist_head;
+
+        llist->insert_node(llist_item);
     }
 
-    print_singly_linked_list(llist->head, "\n", fout);
+    int data;
+    cin >> data;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    int position;
+    cin >> position;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
+
+    print_singly_linked_list(llist_head, " ", fout);
     fout << "\n";
 
-    free_singly_linked_list(llist->head);
+    free_singly_linked_list(llist_head);
 
     fout.close();
 

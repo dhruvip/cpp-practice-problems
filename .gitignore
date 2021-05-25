@@ -1,2 +1,6 @@
 .vscode
 .gdbinit
+build/*
+test-cases/*
+.DS_Store
+.env
